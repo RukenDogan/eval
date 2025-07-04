@@ -1,4 +1,4 @@
-const videoGameList =
+const DATA =
 [
   {
     "id": 1,
