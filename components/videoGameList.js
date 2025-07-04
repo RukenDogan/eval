@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, FlatList } from 'react-native';
 
 import VideoGame from './dataVideoGames';
 
-export default function VideoGameList({ data}) {
+export default function VideoGameList({ data }) {
     const renderItem = ({ item }) => (
         <View style={styles.card}>
             <Text style={styles.title}>{item.titre}</Text>
@@ -15,18 +15,19 @@ export default function VideoGameList({ data}) {
     return (
         <FlatList
             data={data}
+            numColumns={2}
             keyExtractor={(item) => item.id.toString()}
             renderItem={renderItem}
-            horizontal={true}
-            contentContainerStyle={styles.list}
+            contentContainerStyle={{ padding: 8 }}
         />
     );
 }
 
 const styles = StyleSheet.create({
+
     card: {
         flex: 1,
-        backgroundColor: '#333',
+        backgroundColor: '#f0b27a',
         borderRadius: 10,
         margin: 8,
         padding: 12,
@@ -45,7 +46,6 @@ const styles = StyleSheet.create({
 
     genre: {
         fontSize: 12,
-        color: '#ccc'
+        color: 'black'
     },
-
 });

@@ -5,7 +5,7 @@ export default function Header({ count }) {
     return (
         <View style={styles.container}>
             <Text style={styles.name}>Ruu</Text>
-            <Text style={styles.videoGame}>Nombre de jeux vidéos: {count}</Text>
+            <Text style={styles.videoGame}>Nombre de jeux vidéos : {count}</Text>
         </View>
     );
 }
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     },
 
     name: {
-        fontSize: 24,
+        fontSize: 20,
         fontWeight: 'bold',
     },
 
