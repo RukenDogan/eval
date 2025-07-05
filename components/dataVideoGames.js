@@ -91,3 +91,5 @@ const DATA =
     "genre": "Action-Aventure"
   }
 ]
+
+export default DATA;

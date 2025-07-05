@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 
 import Header from './components/header';
@@ -6,44 +6,46 @@ import VideoGameList from './components/videoGameList';
 import VideoGames from './components/dataVideoGames';
 import Dropdown from './components/dropdown';
 
-// import { Dropdown } from 'react-native-element-dropdown';
-import AntDesign from '@expo/vector-icons/AntDesign';
 
 export default function App() {
-  const [games, setGames] = useState(DATA);
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [games, setGames] = useState(VideoGames); // liste des jeux vidéos
+  const [error, setError] = useState(null); // erreur de chargement
+  const [isLoading, setIsLoading] = useState(true); // chargement en cours
+  const [selectedGenre, setSelectedGenre] = useState(null); // genre sélectionné
 
-  // const [selected, setSelected] = useState(null);
-  // const onSelect = (item) => {
-  //   setSelected(item);
-  // };
+  const filteredGames = useMemo(() => {
+    if (!selectedGenre)
+      return games; // si aucun genre sélectionné, retourne tous les jeux
+    return games.filter(game => game.genre === selectedGenre); // si un genre sélectionné, retourne les jeux correspondant au genre
+  },
+    [games, selectedGenre] // liste des jeux vidéos filtrés en fonction du genre sélectionné
+  );
 
-  useEffect(() => {
 
-    const load = async () => {
+  useEffect(() => { // chargement des jeux vidéos
+    const load = async () => { // fonction asynchrone
       try {
-        const data = VideoGames;
-        setGames(data);
-      } catch (err) {
-        setError(err.message || 'Erreur inconnue');
-      } finally {
-        setIsLoading(false);
+        const data = VideoGames; // récupère les jeux vidéos
+        setGames(data); // met à jour la liste des jeux vidéos
+      } catch (err) { // si une erreur est survenue
+        setError(err.message || 'Erreur inconnue'); // affiche l'erreur
+      } finally { // si tout se passe bien
+        setIsLoading(false); // cache le chargement
       }
     };
-    load();
-  }, []);
+    load(); // lance la fonction
+  }, []); // exécute la fonction uniquement si le chargement est terminé
 
-  if (isLoading) {
-    return (
+  if (isLoading) { // si le chargement est en cours
+    return ( // affiche un texte
       <SafeAreaView style={styles.center}>
         <Text>Chargement…</Text>
       </SafeAreaView>
     );
   }
 
-  if (error) {
-    return (
+  if (error) { // si une erreur est survenue
+    return ( // affiche un texte
       <SafeAreaView style={styles.center}>
         <Text style={[styles.errorText]}>
           X {error}
@@ -52,21 +54,16 @@ export default function App() {
     );
   }
 
-  return (
-    <SafeAreaView style={styles.container}>
-      <Header count={DATA.length} />
-      <Text style={styles.filter}>Filtrer par :</Text>
-      
-      <Dropdown
-      
-        // data={DATA}
-        // selectedItem={selected}
-        // style={styles.dropdown}
-        // itemStyle={styles.item}
-        // textStyle={styles.text}
-        // icon={<AntDesign name="down" size={20} color="black" />}
-      />
-      <VideoGameList data={DATA} />
+  return ( // affiche le contenu
+    <SafeAreaView style={styles.container}> *
+      <Header count={games.length} />
+
+      <View style={styles.row}>
+        <Text style={styles.filter}>Filtrer par :</Text>
+        <Dropdown value={selectedGenre} onSelect={setSelectedGenre} />
+      </View>
+
+      <VideoGameList data={filteredGames} />
     </SafeAreaView>
   )
 
@@ -80,13 +77,19 @@ const styles = StyleSheet.create({
     marginBottom: 100,
   },
 
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 20,
+    marginVertical: 20,
+  },
+
   filter: {
     fontSize: 18,
     fontWeight: 'bold',
     margin: 20,
+    marginRight: 50,
   },
-
-
 
   error: {
     color: 'red',
@@ -95,97 +98,3 @@ const styles = StyleSheet.create({
 
 });
 
-
-const DATA =
-  [
-    {
-      "id": 1,
-      "titre": "The Last of Us Part II",
-      "prix": 25,
-      "genre": "Action-Aventure"
-    },
-    {
-      "id": 2,
-      "titre": "FIFA 23",
-      "prix": 20,
-      "genre": "Sport"
-    },
-    {
-      "id": 3,
-      "titre": "Call of Duty: Modern Warfare II",
-      "prix": 30,
-      "genre": "FPS"
-    },
-    {
-      "id": 4,
-      "titre": "Horizon Forbidden West",
-      "prix": 28,
-      "genre": "Action-RPG"
-    },
-    {
-      "id": 5,
-      "titre": "Mario Kart 8 Deluxe",
-      "prix": 35,
-      "genre": "Course"
-    },
-    {
-      "id": 6,
-      "titre": "Animal Crossing: New Horizons",
-      "prix": 22,
-      "genre": "Simulation"
-    },
-    {
-      "id": 7,
-      "titre": "Elden Ring",
-      "prix": 32,
-      "genre": "Action-RPG"
-    },
-    {
-      "id": 8,
-      "titre": "God of War Ragnarök",
-      "prix": 40,
-      "genre": "Action-Aventure"
-    },
-    {
-      "id": 9,
-      "titre": "Gran Turismo 7",
-      "prix": 27,
-      "genre": "Course"
-    },
-    {
-      "id": 10,
-      "titre": "Minecraft",
-      "prix": 18,
-      "genre": "Sandbox"
-    },
-    {
-      "id": 11,
-      "titre": "Fortnite",
-      "prix": 0,
-      "genre": "Battle Royale"
-    },
-    {
-      "id": 12,
-      "titre": "Red Dead Redemption 2",
-      "prix": 23,
-      "genre": "Action-Aventure"
-    },
-    {
-      "id": 13,
-      "titre": "Cyberpunk 2077",
-      "prix": 15,
-      "genre": "RPG"
-    },
-    {
-      "id": 14,
-      "titre": "Resident Evil Village",
-      "prix": 19,
-      "genre": "Horreur"
-    },
-    {
-      "id": 15,
-      "titre": "Assassin's Creed Valhalla",
-      "prix": 21,
-      "genre": "Action-Aventure"
-    }
-  ]

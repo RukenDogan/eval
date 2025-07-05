@@ -15,18 +15,24 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginTop: 50,
-        padding: 36,
+        padding: 20,
+        borderWidth: 1,
+        borderColor: '#f9cb9c',
+        borderRadius: 8,
+        backgroundColor: '#fce5cd',
+        // marginLeft: 20,
+        // marginRight: 20,
 
     },
 
     name: {
         fontSize: 20,
-        fontWeight: 'bold',
+        // fontWeight: 'bold',
     },
 
     videoGame: {
         fontSize: 20,
-        fontWeight: 'bold'
+        // fontWeight: 'bold'
     },
 
 });
